@@ -113,4 +113,331 @@ Pasirink savo vardą
 🎁 Traukti kortelę
 </button>
 
-<div id="card
+<div id="card">
+<h3>Tu dovanoji:</h3>
+<div id="targetName"></div>
+</div>
+
+<div class="progress" id="progress"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const ADMIN_PIN = "1234";
+
+const SUPABASE_URL =
+"https://svxoxpuqrqwpqdbiokgc.supabase.co";
+
+const SUPABASE_ANON_KEY =
+"sb_publishable_o07RJCKWedO1LUEJQ61hgQ_EpbTJV5z";
+
+const db =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
+
+function shuffle(arr){
+
+    const copy=[...arr];
+
+    for(let i=copy.length-1;i>0;i--){
+
+        const j =
+        Math.floor(
+            Math.random()*(i+1)
+        );
+
+        [copy[i],copy[j]] =
+        [copy[j],copy[i]];
+    }
+
+    return copy;
+}
+
+function generateSecretSanta(players){
+
+    let shuffled;
+
+    do{
+
+        shuffled =
+        shuffle(players);
+
+    }while(
+
+        players.some(
+            (p,i)=>
+            p.name===shuffled[i].name
+        )
+
+    );
+
+    return shuffled;
+}
+
+async function loadPlayers(){
+
+    const {data,error} =
+    await db
+    .from("participants")
+    .select("*")
+    .order("name");
+
+    if(error){
+
+        console.error(error);
+        return;
+    }
+
+    const select =
+    document.getElementById(
+        "playerSelect"
+    );
+
+    select.innerHTML =
+    '<option value="">Pasirink savo vardą</option>';
+
+    data.forEach(player=>{
+
+        const option =
+        document.createElement(
+            "option"
+        );
+
+        option.value =
+        player.name;
+
+        option.textContent =
+        player.drawn
+        ? player.name + " ✅"
+        : player.name;
+
+        option.disabled =
+        player.drawn;
+
+        select.appendChild(
+            option
+        );
+
+    });
+
+    updateProgress();
+}
+
+async function updateProgress(){
+
+    const {data} =
+    await db
+    .from("participants")
+    .select("drawn");
+
+    const done =
+    data.filter(
+        x=>x.drawn
+    ).length;
+
+    document.getElementById(
+        "progress"
+    ).innerText =
+    `Ištraukė: ${done}/${data.length}`;
+}
+
+async function generatePairs(){
+
+    const pin =
+    document.getElementById(
+        "adminPin"
+    ).value;
+
+    if(pin!==ADMIN_PIN){
+
+        alert(
+            "Neteisingas PIN"
+        );
+        return;
+    }
+
+    const {data,error} =
+    await db
+    .from("participants")
+    .select("*");
+
+    if(error){
+
+        alert(error.message);
+        return;
+    }
+
+    const pairs =
+    generateSecretSanta(data);
+
+    for(let i=0;i<data.length;i++){
+
+        await db
+        .from("participants")
+        .update({
+            target:pairs[i].name,
+            drawn:false
+        })
+        .eq(
+            "id",
+            data[i].id
+        );
+    }
+
+    document.getElementById(
+        "adminStatus"
+    ).innerHTML =
+    '<div class="success">✅ Poros sugeneruotos</div>';
+
+    loadPlayers();
+}
+
+async function drawGift(){
+
+    const player =
+    document.getElementById(
+        "playerSelect"
+    ).value;
+
+    if(!player){
+
+        alert(
+            "Pasirink vardą"
+        );
+        return;
+    }
+
+    const {data,error} =
+    await db
+    .from("participants")
+    .select("*")
+    .eq(
+        "name",
+        player
+    )
+    .single();
+
+    if(error){
+
+        alert(error.message);
+        return;
+    }
+
+    if(!data.target){
+
+        alert(
+            "Administratorius dar nesugeneravo porų"
+        );
+        return;
+    }
+
+    if(data.drawn){
+
+        alert(
+            "Jau ištraukei"
+        );
+        return;
+    }
+
+    document.getElementById(
+        "targetName"
+    ).innerText =
+    data.target;
+
+    document.getElementById(
+        "card"
+    ).style.display =
+    "block";
+
+    await db
+    .from("participants")
+    .update({
+        drawn:true
+    })
+    .eq(
+        "name",
+        player
+    );
+
+    updateProgress();
+
+    setTimeout(()=>{
+
+        document.getElementById(
+            "card"
+        ).style.display =
+        "none";
+
+        document.getElementById(
+            "targetName"
+        ).innerText =
+        "";
+
+        loadPlayers();
+
+    },5000);
+}
+
+async function resetGame(){
+
+    const pin =
+    document.getElementById(
+        "adminPin"
+    ).value;
+
+    if(pin!==ADMIN_PIN){
+
+        alert(
+            "Neteisingas PIN"
+        );
+        return;
+    }
+
+    await db
+    .from("participants")
+    .update({
+        target:null,
+        drawn:false
+    })
+    .neq("id",-1);
+
+    document.getElementById(
+        "adminStatus"
+    ).innerHTML =
+    '<div class="success">♻️ Žaidimas atstatytas</div>';
+
+    loadPlayers();
+}
+
+document
+.getElementById("generateBtn")
+.addEventListener(
+    "click",
+    generatePairs
+);
+
+document
+.getElementById("drawBtn")
+.addEventListener(
+    "click",
+    drawGift
+);
+
+document
+.getElementById("resetBtn")
+.addEventListener(
+    "click",
+    resetGame
+);
+
+loadPlayers();
+
+</script>
+
+</body>
+</html>
