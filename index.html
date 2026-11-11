@@ -3,117 +3,99 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Secret Santa 🎄</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
 body{
-font-family:Segoe UI,Arial,sans-serif;
-background:linear-gradient(135deg,#0f172a,#14532d);
-color:white;
-padding:20px;
-min-height:100vh;
+    font-family:Segoe UI,Arial,sans-serif;
+    background:linear-gradient(135deg,#0f172a,#14532d);
+    color:white;
+    min-height:100vh;
+    padding:20px;
 }
 
 .container{
-max-width:800px;
-margin:auto;
+    max-width:800px;
+    margin:auto;
 }
 
 .panel{
-background:rgba(255,255,255,.1);
-backdrop-filter:blur(10px);
-padding:25px;
-border-radius:20px;
-margin-bottom:20px;
+    background:rgba(255,255,255,.1);
+    backdrop-filter:blur(10px);
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:20px;
 }
 
 h1{
-text-align:center;
-margin-bottom:20px;
-}
-
-h2{
-margin-bottom:15px;
+    text-align:center;
+    margin-bottom:20px;
 }
 
 input,
 select,
 button{
-width:100%;
-padding:14px;
-margin-top:10px;
-border-radius:10px;
-border:none;
-font-size:16px;
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
 }
 
 button{
-background:#dc2626;
-color:white;
-cursor:pointer;
-transition:.2s;
+    background:#dc2626;
+    color:white;
+    cursor:pointer;
 }
 
 button:hover{
-background:#b91c1c;
+    background:#b91c1c;
 }
 
-button:disabled{
-opacity:.5;
-cursor:not-allowed;
-}
-
-#card{
-display:none;
-margin-top:20px;
-background:white;
-color:black;
-padding:25px;
-border-radius:15px;
-text-align:center;
+.card{
+    display:none;
+    background:white;
+    color:#111;
+    padding:20px;
+    border-radius:15px;
+    margin-top:20px;
+    text-align:center;
 }
 
 .target{
-font-size:32px;
-font-weight:bold;
-color:#15803d;
-margin-top:15px;
-}
-
-.success{
-margin-top:10px;
-color:#b6ffb6;
+    font-size:32px;
+    font-weight:bold;
+    color:#15803d;
+    margin-top:15px;
 }
 
 .progress{
-margin-top:15px;
-font-size:18px;
+    margin-top:15px;
+    font-size:18px;
 }
 
-.admin{
-border:2px solid rgba(255,255,255,.15);
+.success{
+    margin-top:10px;
+    color:#b6ffb6;
 }
-
 </style>
 </head>
-
 <body>
 
 <div class="container">
 
 <h1>🎄 Secret Santa 🎁</h1>
 
-<div class="panel admin">
+<div class="panel">
 
 <h2>🔐 Administratorius</h2>
 
@@ -122,11 +104,11 @@ type="password"
 id="adminPin"
 placeholder="PIN">
 
-<button onclick="generatePairs()">
+<button id="generateBtn">
 🎲 Sugeneruoti poras
 </button>
 
-<button onclick="resetGame()">
+<button id="resetBtn">
 ♻️ Naujas žaidimas
 </button>
 
@@ -139,23 +121,16 @@ placeholder="PIN">
 <h2>🎁 Dalyvis</h2>
 
 <select id="playerSelect">
-
-<option value="">
-Pasirink savo vardą
-</option>
-
+<option value="">Pasirink savo vardą</option>
 </select>
 
-<button onclick="drawGift()">
+<button id="drawBtn">
 🎁 Traukti kortelę
 </button>
 
-<div id="card">
-
+<div class="card" id="card">
 <h3>Tu dovanoji:</h3>
-
 <div id="targetName" class="target"></div>
-
 </div>
 
 <div id="progress" class="progress"></div>
@@ -165,13 +140,8 @@ Pasirink savo vardą
 </div>
 
 <script>
-  
-console.log("SCRIPT START");
-console.log(typeof supabase);
 
-const ADMIN_PIN="1234";
-
-/* ĮRAŠYK SAVO SUPABASE DUOMENIS */
+const ADMIN_PIN = "1234";
 
 const SUPABASE_URL =
 "https://svxoxpuqrqwpqdbiokgc.supabase.co";
@@ -179,105 +149,72 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
 "sb_publishable_o07RJCKWedO1LUEJQ61hgQ_EpbTJV5z";
 
-/* ===================== */
+const { createClient } = supabase;
 
-const supabaseClient =
-supabase.createClient(
-SUPABASE_URL,
-SUPABASE_ANON_KEY
+const db =
+createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
 );
 
 function shuffle(array){
 
-const arr=[...array];
+    const arr=[...array];
 
-for(let i=arr.length-1;i>0;i--){
+    for(let i=arr.length-1;i>0;i--){
 
-const j=
-Math.floor(Math.random()*(i+1));
+        const j =
+        Math.floor(
+            Math.random()*(i+1)
+        );
 
-[arr[i],arr[j]]=
-[arr[j],arr[i]];
+        [arr[i],arr[j]] =
+        [arr[j],arr[i];
+    }
 
-}
-
-return arr;
-
+    return arr;
 }
 
 function createAssignments(players){
 
-let shuffled;
+    let shuffled;
 
-do{
+    do{
 
-shuffled = shuffle(players);
+        shuffled = shuffle(players);
 
-}
-while(
-players.some(
-(p,i)=>p.name===shuffled[i].name
-)
-);
+    }while(
+        players.some(
+            (p,i)=>
+            p.name === shuffled[i].name
+        )
+    );
 
-return shuffled;
-
+    return shuffled;
 }
 
 async function loadPlayers(){
 
-const {data,error} =
-await supabaseClient
-.from("participants")
-.select("*")
-.order("name");
+    const { data,error } =
+    await db
+    .from("participants")
+    .select("*")
+    .order("name");
 
-if(error){
+    if(error){
+        console.error(error);
+        return;
+    }
 
-console.error(error);
-return;
+    const select =
+    document.getElementById(
+        "playerSelect"
+    );
 
-}
+    select.innerHTML =
+    '<option value="">Pasirink savo vardą</option>';
 
-const select =
-document.getElementById(
-"playerSelect"
-);
+    data.forEach(player=>{
 
-select.innerHTML =
-'<option value="">Pasirink savo vardą</option>';
-
-data.forEach(player=>{
-
-const option =
-document.createElement("option");
-
-option.value =
-player.name;
-
-option.textContent =
-player.drawn
-? player.name + " ✅"
-: player.name;
-
-option.disabled =
-player.drawn;
-
-select.appendChild(option);
-
-});
-
-updateProgress();
-
-}
-
-async function updateProgress(){
-
-const {data} =
-await supabaseClient
-.from("participants")
-.select("drawn");
-
-const done =
-data.filter(
-x=>x
+        const option =
+        document
