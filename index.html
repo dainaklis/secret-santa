@@ -8,47 +8,32 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
 body{
-    font-family:Segoe UI,Arial,sans-serif;
-    background:linear-gradient(135deg,#0f172a,#14532d);
+    font-family:Arial,sans-serif;
+    background:#14532d;
     color:white;
-    min-height:100vh;
+    margin:0;
     padding:20px;
 }
 
 .container{
-    max-width:800px;
+    max-width:700px;
     margin:auto;
 }
 
-.panel{
+.box{
     background:rgba(255,255,255,.1);
-    backdrop-filter:blur(10px);
-    padding:25px;
-    border-radius:20px;
+    padding:20px;
+    border-radius:15px;
     margin-bottom:20px;
 }
 
-h1{
-    text-align:center;
-    margin-bottom:20px;
-}
-
-input,
-select,
-button{
+input,select,button{
     width:100%;
-    padding:14px;
+    padding:12px;
     margin-top:10px;
     border:none;
-    border-radius:10px;
-    font-size:16px;
+    border-radius:8px;
 }
 
 button{
@@ -61,31 +46,29 @@ button:hover{
     background:#b91c1c;
 }
 
-.card{
+#card{
     display:none;
     background:white;
-    color:#111;
+    color:black;
     padding:20px;
-    border-radius:15px;
     margin-top:20px;
+    border-radius:10px;
     text-align:center;
 }
 
-.target{
-    font-size:32px;
+#targetName{
+    font-size:30px;
     font-weight:bold;
-    color:#15803d;
-    margin-top:15px;
-}
-
-.progress{
-    margin-top:15px;
-    font-size:18px;
+    color:green;
 }
 
 .success{
+    color:#90ee90;
     margin-top:10px;
-    color:#b6ffb6;
+}
+
+.progress{
+    margin-top:10px;
 }
 </style>
 </head>
@@ -95,13 +78,13 @@ button:hover{
 
 <h1>🎄 Secret Santa 🎁</h1>
 
-<div class="panel">
+<div class="box">
 
-<h2>🔐 Administratorius</h2>
+<h2>Administratorius</h2>
 
 <input
-type="password"
 id="adminPin"
+type="password"
 placeholder="PIN">
 
 <button id="generateBtn">
@@ -116,113 +99,18 @@ placeholder="PIN">
 
 </div>
 
-<div class="panel">
+<div class="box">
 
-<h2>🎁 Dalyvis</h2>
+<h2>Dalyvis</h2>
 
 <select id="playerSelect">
-<option value="">Pasirink savo vardą</option>
+<option value="">
+Pasirink savo vardą
+</option>
 </select>
 
 <button id="drawBtn">
 🎁 Traukti kortelę
 </button>
 
-<div class="card" id="card">
-<h3>Tu dovanoji:</h3>
-<div id="targetName" class="target"></div>
-</div>
-
-<div id="progress" class="progress"></div>
-
-</div>
-
-</div>
-
-<script>
-
-const ADMIN_PIN = "1234";
-
-const SUPABASE_URL =
-"https://svxoxpuqrqwpqdbiokgc.supabase.co";
-
-const SUPABASE_ANON_KEY =
-"sb_publishable_o07RJCKWedO1LUEJQ61hgQ_EpbTJV5z";
-
-const { createClient } = supabase;
-
-const db =
-createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-);
-
-function shuffle(array){
-
-    const arr=[...array];
-
-    for(let i=arr.length-1;i>0;i--){
-
-        const j =
-        Math.floor(
-            Math.random()*(i+1)
-        );
-
-        [arr[i],arr[j]] =
-        [arr[j],arr[i]];
-    }
-
-    return arr;
-}
-
-function createAssignments(players){
-
-    let shuffled;
-
-    do{
-
-        shuffled = shuffle(players);
-
-    }while(
-        players.some(
-            (p,i)=>
-            p.name === shuffled[i].name
-        )
-    );
-
-    return shuffled;
-}
-
-async function loadPlayers(){
-
-    const { data,error } =
-    await db
-    .from("participants")
-    .select("*")
-    .order("name");
-
-    if(error){
-        console.error(error);
-        return;
-    }
-
-    const select =
-    document.getElementById(
-        "playerSelect"
-    );
-
-    
-
-    select.innerHTML =
-    '<option value="">Pasirink savo vardą</option>';
-
-    data.forEach(player=>{
-
-        const option =
-        document
-
-
-    console.log("VISKAS IKRAUTA");
-    console.log(typeof generatePairs);
-    console.log(typeof drawGift);
-    console.log(typeof resetGame);
+<div id="card
