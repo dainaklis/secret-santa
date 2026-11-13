@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="lt">
 <head>
@@ -8,71 +9,227 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-body{
-    font-family:Arial,sans-serif;
-    background:#14532d;
-    color:white;
-    margin:0;
-    padding:20px;
+* {
+    box-sizing: border-box;
 }
 
-.container{
-    max-width:700px;
-    margin:auto;
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #064e3b, #14532d, #166534);
+    color: white;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-.box{
-    background:rgba(255,255,255,.1);
-    padding:20px;
-    border-radius:15px;
-    margin-bottom:20px;
+.container {
+    max-width: 700px;
+    margin: auto;
+    position: relative;
+    z-index: 2;
 }
 
-input,select,button{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    border-radius:8px;
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    text-shadow: 0 3px 10px rgba(0,0,0,.3);
+    animation: titleGlow 3s infinite alternate;
 }
 
-button{
-    background:#dc2626;
-    color:white;
-    cursor:pointer;
+@keyframes titleGlow {
+    from { text-shadow: 0 0 5px #fff; }
+    to { text-shadow: 0 0 18px #fde68a; }
 }
 
-button:hover{
-    background:#b91c1c;
+.box {
+    background: rgba(255,255,255,.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow: 0 8px 25px rgba(0,0,0,.12);
+    transition: transform .3s, box-shadow .3s;
 }
 
-#card{
-    display:none;
-    background:white;
-    color:black;
-    padding:20px;
-    margin-top:20px;
-    border-radius:10px;
-    text-align:center;
+.box:hover {
+    box-shadow: 0 12px 30px rgba(0,0,0,.2);
 }
 
-#targetName{
-    font-size:30px;
-    font-weight:bold;
-    color:green;
+h2 {
+    margin-bottom: 20px;
 }
 
-.success{
-    color:#90ee90;
-    margin-top:10px;
+/* PIN, SELECT IR MYGTUKAI */
+
+input, select, button {
+    display: block;
+    width: 100%;
+    padding: 13px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 9px;
+    font-size: 14px;
+    font-family: inherit;
 }
 
-.progress{
-    margin-top:10px;
+input, select {
+    background: white;
+    color: #222;
+    outline: none;
+    transition: box-shadow .3s;
+}
+
+input:focus, select:focus {
+    box-shadow: 0 0 0 3px rgba(250,204,21,.5);
+}
+
+button {
+    background: linear-gradient(135deg, #ef2929, #dc2626);
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform .2s, box-shadow .2s, background .2s;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #f87171, #b91c1c);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,.2);
+}
+
+button:active {
+    transform: scale(.98);
+}
+
+/* MUZIKOS MYGTUKAS */
+
+.music-button {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: auto;
+    z-index: 10;
+    border-radius: 50px;
+    padding: 13px 18px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.3);
+}
+
+/* DOVANOS KORTELE */
+
+#card {
+    display: none;
+    background: linear-gradient(135deg, #fff, #fef3c7);
+    color: #14532d;
+    padding: 25px 15px;
+    margin-top: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,.2);
+}
+
+#card.show {
+    display: block;
+    animation: cardAppear .7s ease;
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: scale(.7) rotate(-5deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+    }
+}
+
+#targetName {
+    font-size: 30px;
+    font-weight: bold;
+    color: #15803d;
+    margin-top: 15px;
+}
+
+.success {
+    color: #90ee90;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.progress {
+    margin-top: 12px;
+    font-size: 15px;
+}
+
+/* KRINTANCIOS SNAIGES */
+
+#snow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.snowflake {
+    position: absolute;
+    top: -30px;
+    color: white;
+    opacity: .85;
+    animation: snowfall linear infinite;
+    text-shadow: 0 0 5px white;
+}
+
+@keyframes snowfall {
+    0% {
+        transform: translate3d(0, -10vh, 0) rotate(0deg);
+    }
+    100% {
+        transform: translate3d(60px, 110vh, 0) rotate(360deg);
+    }
+}
+
+/* TELEFONAI */
+
+@media(max-width: 600px) {
+    body {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    .box {
+        padding: 17px;
+    }
+
+    #targetName {
+        font-size: 25px;
+    }
+
+    .music-button {
+        right: 12px;
+        bottom: 12px;
+    }
+}
+
+@media(prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
 }
 </style>
 </head>
+
 <body>
+
+<div id="snow"></div>
 
 <div class="container">
 
@@ -85,7 +242,9 @@ button:hover{
 <input
 id="adminPin"
 type="password"
-placeholder="PIN">
+placeholder="PIN"
+autocomplete="off"
+>
 
 <button id="generateBtn">
 🎲 Sugeneruoti poras
@@ -104,9 +263,7 @@ placeholder="PIN">
 <h2>Dalyvis</h2>
 
 <select id="playerSelect">
-<option value="">
-Pasirink savo vardą
-</option>
+<option value="">Pasirink savo vardą</option>
 </select>
 
 <button id="drawBtn">
@@ -114,19 +271,38 @@ Pasirink savo vardą
 </button>
 
 <div id="card">
-<h3>Tu dovanoji:</h3>
+<h3>🎄 Tu dovanoji:</h3>
 <div id="targetName"></div>
+<p>🎁 Gražių švenčių!</p>
 </div>
 
-<div class="progress" id="progress"></div>
-
+<div class="progress" id="progress">
+Ištraukė: 0/0
 </div>
 
 </div>
+
+</div>
+
+<button class="music-button" id="musicBtn">
+🔇 Įjungti kalėdinę muziką
+</button>
 
 <script>
 
+// =====================================
+// 1. ADMINISTRATORIAUS PIN
+// =====================================
+
 const ADMIN_PIN = "1234";
+
+// ČIA GALI PAKEISTI PIN
+// Pvz.: const ADMIN_PIN = "5678";
+
+
+// =====================================
+// 2. SUPABASE DUOMENYS
+// =====================================
 
 const SUPABASE_URL =
 "https://svxoxpuqrqwpqdbiokgc.supabase.co";
@@ -134,306 +310,439 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
 "sb_publishable_o07RJCKWedO1LUEJQ61hgQ_EpbTJV5z";
 
-const db =
-supabase.createClient(
+const db = supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
 );
 
-function shuffle(arr){
 
-    const copy=[...arr];
+// =====================================
+// 3. SNAIGIŲ EFEKTAS
+// =====================================
 
-    for(let i=copy.length-1;i>0;i--){
+const snowContainer = document.getElementById("snow");
 
-        const j =
-        Math.floor(
-            Math.random()*(i+1)
-        );
+for(let i = 0; i < 45; i++) {
 
-        [copy[i],copy[j]] =
-        [copy[j],copy[i]];
+    const snow = document.createElement("div");
+
+    snow.className = "snowflake";
+    snow.innerHTML = "❄";
+
+    snow.style.left = Math.random() * 100 + "%";
+    snow.style.fontSize = (Math.random() * 12 + 8) + "px";
+    snow.style.animationDuration = (Math.random() * 8 + 7) + "s";
+    snow.style.animationDelay = (Math.random() * 10) + "s";
+    snow.style.opacity = Math.random() * .7 + .3;
+
+    snowContainer.appendChild(snow);
+}
+
+
+// =====================================
+// 4. KALĖDINĖ MUZIKA
+// =====================================
+
+let audioContext = null;
+let musicPlaying = false;
+let musicTimer = null;
+let noteIndex = 0;
+
+const melody = [
+    [659, 300],
+    [659, 300],
+    [659, 600],
+    [659, 300],
+    [659, 300],
+    [659, 600],
+    [659, 300],
+    [784, 300],
+    [523, 450],
+    [587, 150],
+    [659, 900],
+    [698, 300],
+    [698, 300],
+    [698, 450],
+    [698, 150],
+    [698, 300],
+    [659, 300],
+    [659, 300],
+    [659, 150],
+    [659, 150],
+    [659, 300],
+    [587, 300],
+    [587, 300],
+    [659, 300],
+    [587, 600],
+    [784, 600]
+];
+
+function playBell(freq, duration) {
+
+    if(!audioContext) return;
+
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.type = "sine";
+    oscillator.frequency.value = freq;
+
+    gain.gain.setValueAtTime(
+        0.0001,
+        audioContext.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.12,
+        audioContext.currentTime + 0.02
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        audioContext.currentTime + duration / 1000
+    );
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.start();
+    oscillator.stop(
+        audioContext.currentTime + duration / 1000
+    );
+}
+
+function playMelody() {
+
+    if(!musicPlaying) return;
+
+    const [freq, duration] = melody[noteIndex];
+
+    playBell(freq, duration);
+
+    noteIndex = (noteIndex + 1) % melody.length;
+
+    musicTimer = setTimeout(
+        playMelody,
+        duration + 100
+    );
+}
+
+document.getElementById("musicBtn").addEventListener(
+    "click",
+    async function() {
+
+        if(!audioContext) {
+
+            const AudioContextClass =
+                window.AudioContext || window.webkitAudioContext;
+
+            if(!AudioContextClass) {
+                alert("Ši naršyklė nepalaiko muzikos funkcijos.");
+                return;
+            }
+
+            audioContext = new AudioContextClass();
+        }
+
+        if(audioContext.state === "suspended") {
+            await audioContext.resume();
+        }
+
+        musicPlaying = !musicPlaying;
+
+        if(musicPlaying) {
+
+            noteIndex = 0;
+            playMelody();
+
+            this.innerText = "🔊 Išjungti muziką";
+
+        } else {
+
+            clearTimeout(musicTimer);
+
+            this.innerText = "🔇 Įjungti kalėdinę muziką";
+        }
+    }
+);
+
+
+// =====================================
+// 5. PORŲ GENERAVIMAS
+// =====================================
+
+function shuffle(arr) {
+
+    const copy = [...arr];
+
+    for(let i = copy.length - 1; i > 0; i--) {
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [copy[i], copy[j]] = [copy[j], copy[i]];
     }
 
     return copy;
 }
 
-function generateSecretSanta(players){
+function generateSecretSanta(players) {
+
+    if(players.length < 2) {
+        throw new Error("Reikia bent dviejų dalyvių!");
+    }
 
     let shuffled;
 
-    do{
+    do {
 
-        shuffled =
-        shuffle(players);
+        shuffled = shuffle(players);
 
-    }while(
-
-        players.some(
-            (p,i)=>
-            p.name===shuffled[i].name
-        )
-
+    } while(
+        players.some((p, i) => p.id === shuffled[i].id)
     );
 
     return shuffled;
 }
 
-async function loadPlayers(){
 
-    const {data,error} =
-    await db
-    .from("participants")
-    .select("*")
-    .order("name");
+// =====================================
+// 6. DALYVIŲ ĮKĖLIMAS
+// =====================================
 
-    if(error){
+async function loadPlayers() {
 
+    const {data, error} = await db
+        .from("participants")
+        .select("*")
+        .order("name");
+
+    if(error) {
         console.error(error);
+        alert("Nepavyko įkelti dalyvių: " + error.message);
         return;
     }
 
-    const select =
-    document.getElementById(
-        "playerSelect"
-    );
+    const select = document.getElementById("playerSelect");
 
     select.innerHTML =
-    '<option value="">Pasirink savo vardą</option>';
+        '<option value="">Pasirink savo vardą</option>';
 
-    data.forEach(player=>{
+    data.forEach(player => {
 
-        const option =
-        document.createElement(
-            "option"
-        );
+        const option = document.createElement("option");
 
-        option.value =
-        player.name;
+        option.value = player.name;
 
-        option.textContent =
-        player.drawn
-        ? player.name + " ✅"
-        : player.name;
+        option.textContent = player.drawn
+            ? player.name + " ✅"
+            : player.name;
 
-        option.disabled =
-        player.drawn;
+        option.disabled = player.drawn;
 
-        select.appendChild(
-            option
-        );
-
+        select.appendChild(option);
     });
 
-    updateProgress();
+    updateProgress(data);
 }
 
-async function updateProgress(){
 
-    const {data} =
-    await db
-    .from("participants")
-    .select("drawn");
+// =====================================
+// 7. ŽAIDIMO EIGOS SKAITIKLIS
+// =====================================
 
-    const done =
-    data.filter(
-        x=>x.drawn
-    ).length;
+async function updateProgress(players = null) {
 
-    document.getElementById(
-        "progress"
-    ).innerText =
-    `Ištraukė: ${done}/${data.length}`;
+    if(!players) {
+
+        const {data, error} = await db
+            .from("participants")
+            .select("drawn");
+
+        if(error) return;
+
+        players = data;
+    }
+
+    const done = players.filter(x => x.drawn).length;
+
+    document.getElementById("progress").innerText =
+        `Ištraukė: ${done}/${players.length}`;
 }
 
-async function generatePairs(){
 
-    const pin =
-    document.getElementById(
-        "adminPin"
-    ).value;
+// =====================================
+// 8. SUGENERUOTI PORAS
+// =====================================
 
-    if(pin!==ADMIN_PIN){
+async function generatePairs() {
 
-        alert(
-            "Neteisingas PIN"
-        );
+    const pin = document.getElementById("adminPin").value;
+
+    if(pin !== ADMIN_PIN) {
+        alert("Neteisingas PIN");
         return;
     }
 
-    const {data,error} =
-    await db
-    .from("participants")
-    .select("*");
-
-    if(error){
-
-        alert(error.message);
-        return;
-    }
-
-    const pairs =
-    generateSecretSanta(data);
-
-    for(let i=0;i<data.length;i++){
-
-        await db
+    const {data, error} = await db
         .from("participants")
-        .update({
-            target:pairs[i].name,
-            drawn:false
-        })
-        .eq(
-            "id",
-            data[i].id
-        );
-    }
+        .select("*");
 
-    document.getElementById(
-        "adminStatus"
-    ).innerHTML =
-    '<div class="success">✅ Poros sugeneruotos</div>';
-
-    loadPlayers();
-}
-
-async function drawGift(){
-
-    const player =
-    document.getElementById(
-        "playerSelect"
-    ).value;
-
-    if(!player){
-
-        alert(
-            "Pasirink vardą"
-        );
-        return;
-    }
-
-    const {data,error} =
-    await db
-    .from("participants")
-    .select("*")
-    .eq(
-        "name",
-        player
-    )
-    .single();
-
-    if(error){
-
+    if(error) {
         alert(error.message);
         return;
     }
 
-    if(!data.target){
+    try {
 
-        alert(
-            "Administratorius dar nesugeneravo porų"
-        );
+        const pairs = generateSecretSanta(data);
+
+        for(let i = 0; i < data.length; i++) {
+
+            const {error: updateError} = await db
+                .from("participants")
+                .update({
+                    target: pairs[i].name,
+                    drawn: false
+                })
+                .eq("id", data[i].id);
+
+            if(updateError) throw updateError;
+        }
+
+        document.getElementById("adminStatus").innerHTML =
+            '<div class="success">🎄 Poros sėkmingai sugeneruotos!</div>';
+
+        document.getElementById("adminPin").value = "";
+
+        await loadPlayers();
+
+    } catch(error) {
+
+        alert(error.message);
+    }
+}
+
+
+// =====================================
+// 9. IŠTRAUKTI DOVANĄ
+// =====================================
+
+async function drawGift() {
+
+    const player = document.getElementById("playerSelect").value;
+
+    if(!player) {
+        alert("Pasirink vardą");
         return;
     }
 
-    if(data.drawn){
+    const {data, error} = await db
+        .from("participants")
+        .select("*")
+        .eq("name", player)
+        .single();
 
-        alert(
-            "Jau ištraukei"
-        );
+    if(error) {
+        alert(error.message);
         return;
     }
 
-    document.getElementById(
-        "targetName"
-    ).innerText =
-    data.target;
+    if(!data.target) {
+        alert("Administratorius dar nesugeneravo porų");
+        return;
+    }
 
-    document.getElementById(
-        "card"
-    ).style.display =
-    "block";
+    if(data.drawn) {
+        alert("Jau ištraukei!");
+        return;
+    }
 
-    await db
-    .from("participants")
-    .update({
-        drawn:true
-    })
-    .eq(
-        "name",
-        player
-    );
+    const {error: updateError} = await db
+        .from("participants")
+        .update({drawn: true})
+        .eq("name", player);
 
-    updateProgress();
+    if(updateError) {
+        alert(updateError.message);
+        return;
+    }
 
-    setTimeout(()=>{
+    document.getElementById("targetName").innerText = data.target;
 
-        document.getElementById(
-            "card"
-        ).style.display =
-        "none";
+    document.getElementById("card").classList.add("show");
 
-        document.getElementById(
-            "targetName"
-        ).innerText =
-        "";
+    await updateProgress();
+
+    setTimeout(() => {
+
+        document.getElementById("card").classList.remove("show");
+
+        document.getElementById("targetName").innerText = "";
 
         loadPlayers();
 
-    },8000);
+    }, 10000);
 }
 
-async function resetGame(){
 
-    const pin =
-    document.getElementById(
-        "adminPin"
-    ).value;
+// =====================================
+// 10. NAUJAS ŽAIDIMAS
+// =====================================
 
-    if(pin!==ADMIN_PIN){
+async function resetGame() {
 
-        alert(
-            "Neteisingas PIN"
-        );
+    const pin = document.getElementById("adminPin").value;
+
+    if(pin !== ADMIN_PIN) {
+        alert("Neteisingas PIN");
         return;
     }
 
-    await db
-    .from("participants")
-    .update({
-        target:null,
-        drawn:false
-    })
-    .neq("id",-1);
+    if(!confirm("Ar tikrai norite pradėti naują žaidimą?")) {
+        return;
+    }
 
-    document.getElementById(
-        "adminStatus"
-    ).innerHTML =
-    '<div class="success">♻️ Žaidimas atstatytas</div>';
+    const {error} = await db
+        .from("participants")
+        .update({
+            target: null,
+            drawn: false
+        })
+        .not("id", "is", null);
 
-    loadPlayers();
+    if(error) {
+        alert(error.message);
+        return;
+    }
+
+    document.getElementById("adminStatus").innerHTML =
+        '<div class="success">♻️ Žaidimas sėkmingai atstatytas!</div>';
+
+    document.getElementById("adminPin").value = "";
+
+    document.getElementById("card").classList.remove("show");
+
+    await loadPlayers();
 }
 
-document
-.getElementById("generateBtn")
-.addEventListener(
-    "click",
-    generatePairs
-);
 
-document
-.getElementById("drawBtn")
-.addEventListener(
-    "click",
-    drawGift
-);
+// =====================================
+// 11. MYGTUKŲ VEIKSMAI
+// =====================================
 
-document
-.getElementById("resetBtn")
-.addEventListener(
-    "click",
-    resetGame
-);
+document.getElementById("generateBtn")
+    .addEventListener("click", generatePairs);
+
+document.getElementById("drawBtn")
+    .addEventListener("click", drawGift);
+
+document.getElementById("resetBtn")
+    .addEventListener("click", resetGame);
+
+
+// =====================================
+// 12. PALEIDŽIAME PUSLAPĮ
+// =====================================
 
 loadPlayers();
 
