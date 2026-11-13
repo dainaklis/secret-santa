@@ -14,214 +14,369 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #064e3b, #14532d, #166534);
-    color: white;
     margin: 0;
-    padding: 20px;
     min-height: 100vh;
+    padding: 25px 16px 90px;
+    font-family: Arial, sans-serif;
+    color: white;
+    background:
+        radial-gradient(ellipse at top, #28764b 0%, transparent 60%),
+        linear-gradient(135deg, #032d1b, #14532d, #06351e);
     overflow-x: hidden;
 }
 
 .container {
-    max-width: 700px;
+    max-width: 920px;
     margin: auto;
     position: relative;
     z-index: 2;
 }
 
-h1 {
+/* ANTRAŠTĖ */
+
+.header {
     text-align: center;
-    margin-bottom: 25px;
-    text-shadow: 0 3px 10px rgba(0,0,0,.3);
-    animation: titleGlow 3s infinite alternate;
+    margin: 15px 0 30px;
 }
 
-@keyframes titleGlow {
-    from { text-shadow: 0 0 5px #fff; }
-    to { text-shadow: 0 0 18px #fde68a; }
+.header h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(35px, 6vw, 65px);
+    font-style: italic;
+    color: #fff3c4;
+    text-shadow: 0 0 15px #fbbf24, 0 4px 10px #000;
+    margin: 0;
+    animation: glow 3s infinite alternate;
 }
+
+.header p {
+    color: #fde68a;
+    letter-spacing: 3px;
+    font-size: 13px;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px #fbbf24; }
+    to { text-shadow: 0 0 25px #fff, 0 0 40px #fbbf24; }
+}
+
+/* KALĖDINĖS LEMPUTĖS */
+
+.lights {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    display: flex;
+    justify-content: space-around;
+    pointer-events: none;
+    z-index: 3;
+    border-top: 2px solid rgba(255,255,255,.3);
+}
+
+.bulb {
+    width: 13px;
+    height: 20px;
+    border-radius: 50%;
+    margin-top: 3px;
+    animation: bulbGlow 1.5s infinite alternate;
+}
+
+.bulb:nth-child(4n+1) { background: #facc15; box-shadow: 0 0 18px #facc15; }
+.bulb:nth-child(4n+2) { background: #ef4444; box-shadow: 0 0 18px #ef4444; animation-delay: .4s; }
+.bulb:nth-child(4n+3) { background: #22c55e; box-shadow: 0 0 18px #22c55e; animation-delay: .8s; }
+.bulb:nth-child(4n) { background: #60a5fa; box-shadow: 0 0 18px #60a5fa; animation-delay: .2s; }
+
+@keyframes bulbGlow {
+    from { opacity: .5; }
+    to { opacity: 1; }
+}
+
+/* ŠONINĖS DEKORACIJOS */
+
+.side-decoration {
+    position: fixed;
+    bottom: 15px;
+    font-size: 110px;
+    z-index: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 0 15px rgba(255,255,255,.2));
+}
+
+.tree {
+    right: 10px;
+    animation: treeGlow 3s infinite alternate;
+}
+
+.snowman {
+    left: 5px;
+    font-size: 100px;
+}
+
+@keyframes treeGlow {
+    from { filter: drop-shadow(0 0 5px #facc15); }
+    to { filter: drop-shadow(0 0 25px #facc15); }
+}
+
+/* LANGAI */
 
 .box {
-    background: rgba(255,255,255,.12);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 20px;
-    border-radius: 16px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(255,255,255,.12);
-    box-shadow: 0 8px 25px rgba(0,0,0,.12);
+    background: rgba(15, 75, 42, .82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.22);
+    border-radius: 22px;
+    padding: 28px;
+    margin-bottom: 25px;
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.25),
+        inset 0 1px rgba(255,255,255,.1);
     transition: transform .3s, box-shadow .3s;
+    position: relative;
 }
 
 .box:hover {
-    box-shadow: 0 12px 30px rgba(0,0,0,.2);
+    box-shadow: 0 15px 35px rgba(0,0,0,.35);
+    transform: translateY(-2px);
 }
 
-h2 {
-    margin-bottom: 20px;
+.box h2 {
+    margin: 0 0 20px;
+    font-size: 24px;
 }
 
-/* PIN, SELECT IR MYGTUKAI */
+/* FORMOS */
 
 input, select, button {
     display: block;
     width: 100%;
-    padding: 13px 15px;
-    margin-top: 10px;
+    box-sizing: border-box;
+    padding: 15px;
+    margin-top: 12px;
     border: none;
-    border-radius: 9px;
-    font-size: 14px;
-    font-family: inherit;
+    border-radius: 11px;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
 }
 
 input, select {
-    background: white;
+    background: #fff;
     color: #222;
     outline: none;
     transition: box-shadow .3s;
 }
 
 input:focus, select:focus {
-    box-shadow: 0 0 0 3px rgba(250,204,21,.5);
+    box-shadow: 0 0 0 4px rgba(250,204,21,.4);
 }
 
+/* RAUDONI MYGTUKAI */
+
 button {
-    background: linear-gradient(135deg, #ef2929, #dc2626);
+    background: linear-gradient(135deg, #ef2929, #c81010);
     color: white;
-    cursor: pointer;
     font-weight: bold;
-    transition: transform .2s, box-shadow .2s, background .2s;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,.2);
+    transition: all .25s;
 }
 
 button:hover {
-    background: linear-gradient(135deg, #f87171, #b91c1c);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,.2);
+    background: linear-gradient(135deg, #ff4b4b, #b91c1c);
+    transform: translateY(-3px);
+    box-shadow: 0 7px 18px rgba(0,0,0,.3);
 }
 
 button:active {
     transform: scale(.98);
 }
 
-/* MUZIKOS MYGTUKAS */
-
-.music-button {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    width: auto;
-    z-index: 10;
-    border-radius: 50px;
-    padding: 13px 18px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.3);
+button:disabled {
+    opacity: .6;
+    cursor: wait;
+    transform: none;
 }
 
 /* DOVANOS KORTELE */
 
 #card {
     display: none;
-    background: linear-gradient(135deg, #fff, #fef3c7);
-    color: #14532d;
-    padding: 25px 15px;
-    margin-top: 20px;
-    border-radius: 15px;
+    margin-top: 25px;
+    padding: 30px 15px;
     text-align: center;
-    box-shadow: 0 8px 25px rgba(0,0,0,.2);
+    border-radius: 18px;
+    color: #14532d;
+    background: linear-gradient(135deg, #fffdf2, #fef0c0);
+    border: 3px solid #facc15;
+    box-shadow: 0 0 25px rgba(250,204,21,.5);
+    position: relative;
+    overflow: hidden;
 }
 
 #card.show {
     display: block;
-    animation: cardAppear .7s ease;
+    animation: reveal .8s cubic-bezier(.2,.8,.3,1.3);
 }
 
-@keyframes cardAppear {
-    from {
+#card h3 {
+    font-size: 23px;
+}
+
+#targetName {
+    font-family: Georgia, serif;
+    font-size: clamp(30px, 6vw, 48px);
+    font-weight: bold;
+    color: #15803d;
+    margin: 20px 0;
+    text-shadow: 0 2px 8px rgba(21,128,61,.2);
+}
+
+.greeting {
+    color: #dc2626;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 24px;
+}
+
+@keyframes reveal {
+    0% {
         opacity: 0;
-        transform: scale(.7) rotate(-5deg);
+        transform: scale(.5) rotate(-8deg);
     }
-    to {
+    70% {
+        transform: scale(1.06) rotate(2deg);
+    }
+    100% {
         opacity: 1;
         transform: scale(1) rotate(0);
     }
 }
 
-#targetName {
-    font-size: 30px;
-    font-weight: bold;
-    color: #15803d;
-    margin-top: 15px;
-}
-
-.success {
-    color: #90ee90;
-    margin-top: 12px;
-    font-weight: bold;
-}
+/* PROGRESAS */
 
 .progress {
-    margin-top: 12px;
-    font-size: 15px;
+    margin-top: 18px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-/* KRINTANCIOS SNAIGES */
+.progress-icon {
+    background: #22c55e;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* SNAIGĖS */
 
 #snow {
     position: fixed;
     inset: 0;
+    overflow: hidden;
     pointer-events: none;
     z-index: 1;
-    overflow: hidden;
 }
 
 .snowflake {
     position: absolute;
     top: -30px;
     color: white;
-    opacity: .85;
     animation: snowfall linear infinite;
-    text-shadow: 0 0 5px white;
+    text-shadow: 0 0 7px white;
 }
 
 @keyframes snowfall {
     0% {
-        transform: translate3d(0, -10vh, 0) rotate(0deg);
+        transform: translate3d(0,-10vh,0) rotate(0deg);
     }
     100% {
-        transform: translate3d(60px, 110vh, 0) rotate(360deg);
+        transform: translate3d(70px,110vh,0) rotate(360deg);
     }
+}
+
+/* KONFETI */
+
+.confetti {
+    position: fixed;
+    top: -20px;
+    z-index: 20;
+    pointer-events: none;
+    animation: confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* MUZIKOS MYGTUKAS */
+
+.music-button {
+    position: fixed;
+    right: 22px;
+    bottom: 20px;
+    width: auto;
+    z-index: 30;
+    border-radius: 50px;
+    padding: 15px 22px;
+}
+
+/* SĖKMĖS PRANEŠIMAS */
+
+.success {
+    color: #bbf7d0;
+    font-weight: bold;
+    margin-top: 15px;
 }
 
 /* TELEFONAI */
 
-@media(max-width: 600px) {
+@media(max-width: 650px) {
     body {
-        padding: 15px;
-    }
-
-    h1 {
-        font-size: 25px;
+        padding: 20px 12px 90px;
     }
 
     .box {
-        padding: 17px;
+        padding: 20px 16px;
     }
 
-    #targetName {
-        font-size: 25px;
+    .box h2 {
+        font-size: 21px;
+    }
+
+    .header {
+        margin-top: 35px;
+    }
+
+    .side-decoration {
+        font-size: 65px;
+        opacity: .65;
+    }
+
+    .snowman {
+        font-size: 60px;
     }
 
     .music-button {
         right: 12px;
         bottom: 12px;
+        padding: 12px 16px;
+        font-size: 13px;
     }
 }
 
 @media(prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
+    .snowflake, .header h1, .bulb, .tree {
+        animation: none !important;
     }
 }
 </style>
@@ -229,80 +384,117 @@ button:active {
 
 <body>
 
+<!-- LEMPUTĖS -->
+
+<div class="lights">
+    <span class="bulb"></span>
+    <span class="bulb"></span>
+    <span class="bulb"></span>
+    <span class="bulb"></span>
+    <span class="bulb"></span>
+    <span class="bulb"></span>
+    <span class="bulb"></span>
+    <span class="bulb"></span>
+    <span class="bulb"></span>
+    <span class="bulb"></span>
+</div>
+
+<!-- SNAIGĖS -->
+
 <div id="snow"></div>
+
+<!-- DEKORACIJOS -->
+
+<div class="side-decoration snowman">⛄</div>
+<div class="side-decoration tree">🎄</div>
 
 <div class="container">
 
-<h1>🎄 Secret Santa 🎁</h1>
+    <header class="header">
+        <h1>🎄 Secret Santa 🎁</h1>
+        <p>MAGIŠKAS KALĖDINIS DOVANŲ ŽAIDIMAS</p>
+    </header>
 
-<div class="box">
+    <!-- ADMINISTRATORIUS -->
 
-<h2>Administratorius</h2>
+    <div class="box">
 
-<input
-id="adminPin"
-type="password"
-placeholder="PIN"
-autocomplete="off"
->
+        <h2>👤 Administratorius</h2>
 
-<button id="generateBtn">
-🎲 Sugeneruoti poras
-</button>
+        <input
+            id="adminPin"
+            type="password"
+            placeholder="🔒 PIN"
+            autocomplete="off"
+        >
 
-<button id="resetBtn">
-♻️ Naujas žaidimas
-</button>
+        <button id="generateBtn">
+            🎲 Sugeneruoti poras
+        </button>
 
-<div id="adminStatus"></div>
+        <button id="resetBtn">
+            ♻️ Naujas žaidimas
+        </button>
+
+        <div id="adminStatus"></div>
+
+    </div>
+
+    <!-- DALYVIS -->
+
+    <div class="box">
+
+        <h2>🎅 Dalyvis</h2>
+
+        <select id="playerSelect">
+            <option value="">Pasirink savo vardą</option>
+        </select>
+
+        <button id="drawBtn">
+            🎁 Traukti kortelę
+        </button>
+
+        <!-- DOVANOS KORTELE -->
+
+        <div id="card">
+
+            <h3>🎄 Tu dovanoji:</h3>
+
+            <div id="targetName"></div>
+
+            <div class="greeting">
+                🎁 Gražių švenčių! 🎁
+            </div>
+
+        </div>
+
+        <div class="progress" id="progress">
+            <span class="progress-icon">✓</span>
+            Ištraukė: 0/0
+        </div>
+
+    </div>
 
 </div>
 
-<div class="box">
-
-<h2>Dalyvis</h2>
-
-<select id="playerSelect">
-<option value="">Pasirink savo vardą</option>
-</select>
-
-<button id="drawBtn">
-🎁 Traukti kortelę
-</button>
-
-<div id="card">
-<h3>🎄 Tu dovanoji:</h3>
-<div id="targetName"></div>
-<p>🎁 Gražių švenčių!</p>
-</div>
-
-<div class="progress" id="progress">
-Ištraukė: 0/0
-</div>
-
-</div>
-
-</div>
+<!-- MUZIKA -->
 
 <button class="music-button" id="musicBtn">
-🔇 Įjungti kalėdinę muziką
+    🔇 Įjungti muziką
 </button>
 
 <script>
 
-// =====================================
+// ========================================
 // 1. ADMINISTRATORIAUS PIN
-// =====================================
+// ========================================
 
 const ADMIN_PIN = "1234";
 
-// ČIA GALI PAKEISTI PIN
-// Pvz.: const ADMIN_PIN = "5678";
 
-
-// =====================================
+// ========================================
 // 2. SUPABASE DUOMENYS
-// =====================================
+// ========================================
 
 const SUPABASE_URL =
 "https://svxoxpuqrqwpqdbiokgc.supabase.co";
@@ -316,21 +508,21 @@ const db = supabase.createClient(
 );
 
 
-// =====================================
-// 3. SNAIGIŲ EFEKTAS
-// =====================================
+// ========================================
+// 3. SNAIGIŲ ANIMACIJA
+// ========================================
 
 const snowContainer = document.getElementById("snow");
 
-for(let i = 0; i < 45; i++) {
+for(let i = 0; i < 55; i++) {
 
     const snow = document.createElement("div");
 
     snow.className = "snowflake";
-    snow.innerHTML = "❄";
+    snow.textContent = "❄";
 
     snow.style.left = Math.random() * 100 + "%";
-    snow.style.fontSize = (Math.random() * 12 + 8) + "px";
+    snow.style.fontSize = (Math.random() * 14 + 7) + "px";
     snow.style.animationDuration = (Math.random() * 8 + 7) + "s";
     snow.style.animationDelay = (Math.random() * 10) + "s";
     snow.style.opacity = Math.random() * .7 + .3;
@@ -339,9 +531,48 @@ for(let i = 0; i < 45; i++) {
 }
 
 
-// =====================================
-// 4. KALĖDINĖ MUZIKA
-// =====================================
+// ========================================
+// 4. KONFETI EFEKTAS
+// ========================================
+
+function launchConfetti() {
+
+    const colors = [
+        "#ef4444",
+        "#facc15",
+        "#22c55e",
+        "#ffffff",
+        "#3b82f6"
+    ];
+
+    for(let i = 0; i < 65; i++) {
+
+        const piece = document.createElement("div");
+
+        piece.className = "confetti";
+        piece.textContent = Math.random() > .5 ? "✦" : "●";
+
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.color =
+            colors[Math.floor(Math.random() * colors.length)];
+
+        piece.style.fontSize =
+            (Math.random() * 12 + 7) + "px";
+
+        piece.style.animationDuration =
+            (Math.random() * 2 + 2) + "s";
+
+        document.body.appendChild(piece);
+
+        setTimeout(() => piece.remove(), 4500);
+    }
+}
+
+
+// ========================================
+// 5. KALĖDINĖ MUZIKA
+// ORIGINALI VARPELIŲ MELODIJA
+// ========================================
 
 let audioContext = null;
 let musicPlaying = false;
@@ -349,32 +580,15 @@ let musicTimer = null;
 let noteIndex = 0;
 
 const melody = [
-    [659, 300],
-    [659, 300],
-    [659, 600],
-    [659, 300],
-    [659, 300],
-    [659, 600],
-    [659, 300],
-    [784, 300],
-    [523, 450],
-    [587, 150],
-    [659, 900],
-    [698, 300],
-    [698, 300],
-    [698, 450],
-    [698, 150],
-    [698, 300],
-    [659, 300],
-    [659, 300],
-    [659, 150],
-    [659, 150],
-    [659, 300],
-    [587, 300],
-    [587, 300],
-    [659, 300],
-    [587, 600],
-    [784, 600]
+    [659,300],[659,300],[659,600],
+    [659,300],[659,300],[659,600],
+    [659,300],[784,300],[523,450],
+    [587,150],[659,900],
+    [698,300],[698,300],[698,450],
+    [698,150],[698,300],[659,300],
+    [659,300],[659,150],[659,150],
+    [659,300],[587,300],[587,300],
+    [659,300],[587,600],[784,600]
 ];
 
 function playBell(freq, duration) {
@@ -394,7 +608,7 @@ function playBell(freq, duration) {
 
     gain.gain.exponentialRampToValueAtTime(
         0.12,
-        audioContext.currentTime + 0.02
+        audioContext.currentTime + .02
     );
 
     gain.gain.exponentialRampToValueAtTime(
@@ -437,7 +651,7 @@ document.getElementById("musicBtn").addEventListener(
                 window.AudioContext || window.webkitAudioContext;
 
             if(!AudioContextClass) {
-                alert("Ši naršyklė nepalaiko muzikos funkcijos.");
+                alert("Naršyklė nepalaiko muzikos.");
                 return;
             }
 
@@ -461,15 +675,15 @@ document.getElementById("musicBtn").addEventListener(
 
             clearTimeout(musicTimer);
 
-            this.innerText = "🔇 Įjungti kalėdinę muziką";
+            this.innerText = "🔇 Įjungti muziką";
         }
     }
 );
 
 
-// =====================================
-// 5. PORŲ GENERAVIMAS
-// =====================================
+// ========================================
+// 6. PORŲ SUMAIŠYMAS
+// ========================================
 
 function shuffle(arr) {
 
@@ -505,9 +719,9 @@ function generateSecretSanta(players) {
 }
 
 
-// =====================================
-// 6. DALYVIŲ ĮKĖLIMAS
-// =====================================
+// ========================================
+// 7. DALYVIŲ ĮKĖLIMAS
+// ========================================
 
 async function loadPlayers() {
 
@@ -517,8 +731,11 @@ async function loadPlayers() {
         .order("name");
 
     if(error) {
+
         console.error(error);
+
         alert("Nepavyko įkelti dalyvių: " + error.message);
+
         return;
     }
 
@@ -546,9 +763,9 @@ async function loadPlayers() {
 }
 
 
-// =====================================
-// 7. ŽAIDIMO EIGOS SKAITIKLIS
-// =====================================
+// ========================================
+// 8. ŽAIDIMO PROGRESAS
+// ========================================
 
 async function updateProgress(players = null) {
 
@@ -565,34 +782,35 @@ async function updateProgress(players = null) {
 
     const done = players.filter(x => x.drawn).length;
 
-    document.getElementById("progress").innerText =
-        `Ištraukė: ${done}/${players.length}`;
+    document.getElementById("progress").innerHTML =
+        `<span class="progress-icon">✓</span>
+         Ištraukė: ${done}/${players.length}`;
 }
 
 
-// =====================================
-// 8. SUGENERUOTI PORAS
-// =====================================
+// ========================================
+// 9. PORŲ GENERAVIMAS
+// ========================================
 
 async function generatePairs() {
 
     const pin = document.getElementById("adminPin").value;
+    const btn = document.getElementById("generateBtn");
 
     if(pin !== ADMIN_PIN) {
-        alert("Neteisingas PIN");
+        alert("Neteisingas PIN!");
         return;
     }
 
-    const {data, error} = await db
-        .from("participants")
-        .select("*");
-
-    if(error) {
-        alert(error.message);
-        return;
-    }
+    btn.disabled = true;
 
     try {
+
+        const {data, error} = await db
+            .from("participants")
+            .select("*");
+
+        if(error) throw error;
 
         const pairs = generateSecretSanta(data);
 
@@ -620,81 +838,92 @@ async function generatePairs() {
 
         alert(error.message);
     }
+
+    btn.disabled = false;
 }
 
 
-// =====================================
-// 9. IŠTRAUKTI DOVANĄ
-// =====================================
+// ========================================
+// 10. DOVANOS TRAUKIMAS
+// ========================================
 
 async function drawGift() {
 
     const player = document.getElementById("playerSelect").value;
+    const btn = document.getElementById("drawBtn");
 
     if(!player) {
-        alert("Pasirink vardą");
+        alert("Pasirink savo vardą!");
         return;
     }
 
-    const {data, error} = await db
-        .from("participants")
-        .select("*")
-        .eq("name", player)
-        .single();
+    btn.disabled = true;
 
-    if(error) {
+    try {
+
+        const {data, error} = await db
+            .from("participants")
+            .select("*")
+            .eq("name", player)
+            .single();
+
+        if(error) throw error;
+
+        if(!data.target) {
+            alert("Administratorius dar nesugeneravo porų!");
+            return;
+        }
+
+        if(data.drawn) {
+            alert("Jau ištraukei!");
+            return;
+        }
+
+        const {error: updateError} = await db
+            .from("participants")
+            .update({drawn: true})
+            .eq("name", player);
+
+        if(updateError) throw updateError;
+
+        document.getElementById("targetName").innerText =
+            data.target;
+
+        document.getElementById("card").classList.add("show");
+
+        launchConfetti();
+
+        await updateProgress();
+
+        setTimeout(() => {
+
+            document.getElementById("card").classList.remove("show");
+
+            document.getElementById("targetName").innerText = "";
+
+            loadPlayers();
+
+        }, 10000);
+
+    } catch(error) {
+
         alert(error.message);
-        return;
     }
 
-    if(!data.target) {
-        alert("Administratorius dar nesugeneravo porų");
-        return;
-    }
-
-    if(data.drawn) {
-        alert("Jau ištraukei!");
-        return;
-    }
-
-    const {error: updateError} = await db
-        .from("participants")
-        .update({drawn: true})
-        .eq("name", player);
-
-    if(updateError) {
-        alert(updateError.message);
-        return;
-    }
-
-    document.getElementById("targetName").innerText = data.target;
-
-    document.getElementById("card").classList.add("show");
-
-    await updateProgress();
-
-    setTimeout(() => {
-
-        document.getElementById("card").classList.remove("show");
-
-        document.getElementById("targetName").innerText = "";
-
-        loadPlayers();
-
-    }, 10000);
+    btn.disabled = false;
 }
 
 
-// =====================================
-// 10. NAUJAS ŽAIDIMAS
-// =====================================
+// ========================================
+// 11. NAUJAS ŽAIDIMAS
+// ========================================
 
 async function resetGame() {
 
     const pin = document.getElementById("adminPin").value;
 
     if(pin !== ADMIN_PIN) {
-        alert("Neteisingas PIN");
+        alert("Neteisingas PIN!");
         return;
     }
 
@@ -702,33 +931,45 @@ async function resetGame() {
         return;
     }
 
-    const {error} = await db
-        .from("participants")
-        .update({
-            target: null,
-            drawn: false
-        })
-        .not("id", "is", null);
+    const btn = document.getElementById("resetBtn");
 
-    if(error) {
+    btn.disabled = true;
+
+    try {
+
+        const {error} = await db
+            .from("participants")
+            .update({
+                target: null,
+                drawn: false
+            })
+            .not("id", "is", null);
+
+        if(error) throw error;
+
+        document.getElementById("adminStatus").innerHTML =
+            '<div class="success">♻️ Žaidimas atstatytas!</div>';
+
+        document.getElementById("adminPin").value = "";
+
+        document.getElementById("card").classList.remove("show");
+
+        document.getElementById("targetName").innerText = "";
+
+        await loadPlayers();
+
+    } catch(error) {
+
         alert(error.message);
-        return;
     }
 
-    document.getElementById("adminStatus").innerHTML =
-        '<div class="success">♻️ Žaidimas sėkmingai atstatytas!</div>';
-
-    document.getElementById("adminPin").value = "";
-
-    document.getElementById("card").classList.remove("show");
-
-    await loadPlayers();
+    btn.disabled = false;
 }
 
 
-// =====================================
-// 11. MYGTUKŲ VEIKSMAI
-// =====================================
+// ========================================
+// 12. MYGTUKAI
+// ========================================
 
 document.getElementById("generateBtn")
     .addEventListener("click", generatePairs);
@@ -740,9 +981,9 @@ document.getElementById("resetBtn")
     .addEventListener("click", resetGame);
 
 
-// =====================================
-// 12. PALEIDŽIAME PUSLAPĮ
-// =====================================
+// ========================================
+// 13. PALEIDIMAS
+// ========================================
 
 loadPlayers();
 
